@@ -2,4 +2,8 @@
 title: "About"
 ---
 
-About this site
+My name is Shyamali Sheth and I'm an upcoming sophmore in highschool who is taking a Data Science Class for the first time. Here's my github [profile](https://github.com/Shyamali-Sheth). You can contact me at shyamali.sheth@gmail.com
+
+This project is about a dataset studying what factors affect how a student performs in school on academics. 
+
+This project was created as a part of [Kane’s Data Science Bootcamp](https://bootcamp.davidkane.info/). 

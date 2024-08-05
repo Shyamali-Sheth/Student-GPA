@@ -5,3 +5,7 @@
 
 /.quarto/
 *Rproj
+*cache
+*files
+_site
+*DS_Store
