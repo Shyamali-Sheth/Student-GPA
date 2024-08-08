@@ -1,0 +1,93 @@
+---
+title: "Distrabution of GPA scores"
+author: "Shyamali Sheth"
+execute: 
+  echo: false
+---
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+
+```{r}
+# Load the data
+data <- read.csv("data/GPA_Data.csv")
+```
+
+
+```{r}
+# Convert relevant columns to factors
+data <- data %>%
+  mutate(
+    Gender = as.factor(Gender),
+    ParentalEducation = as.factor(ParentalEducation),
+    ParentalSupport = as.factor(ParentalSupport),
+    Tutoring = as.factor(Tutoring),
+    Extracurricular = as.factor(Extracurricular),
+    Sports = as.factor(Sports),
+    Music = as.factor(Music),
+    Volunteering = as.factor(Volunteering),
+    GradeClass = as.factor(GradeClass)
+  )
+```
+
+
+```{r}
+# 1. Distribution of GPA (Histogram)
+ggplot(data, aes(x = GPA)) + 
+  geom_histogram(binwidth = 0.1, fill = "blue", color = "black") +
+  labs(title = "Distribution of GPA Scores", x = "GPA", y = "Frequency")
+```
+
+
+```{r}
+# 2. GPA by Gender (Violin Plot)
+ggplot(data, aes(x = Gender, y = GPA, fill = Gender)) + 
+  geom_violin(trim = FALSE) +
+  labs(title = "GPA by Gender", x = "Gender", y = "GPA") +
+  scale_fill_discrete(name = "Gender", labels = c("Female", "Male"))
+```
+
+
+```{r}
+# Create bins for Study Time
+data <- data %>%
+  mutate(StudyTimeBin = cut(StudyTimeWeekly, breaks = seq(0, 20, by = 2), right = FALSE))
+
+# Create the box plot
+ggplot(data, aes(x = StudyTimeBin, y = GPA)) + 
+  geom_boxplot() +
+  labs(title = "Study Time vs. GPA", x = "Weekly Study Time (hours, binned)", y = "GPA") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+```{r}
+# Convert relevant columns to factors
+data <- data %>%
+  mutate(
+    ParentalEducation = as.factor(ParentalEducation)
+  )
+
+# Create the point plot
+ggplot(data, aes(x = ParentalEducation, y = GPA)) + 
+  geom_jitter(width = 0.2, height = 0, alpha = 0.5) +
+  labs(title = "Parental Education Level vs. GPA", x = "Parental Education Level", y = "GPA")
+```
+
+```{r}
+# 6. Extracurricular Activities and GPA (Density Plot)
+data_long <- data %>%
+  select(StudentID, GPA, Sports, Music, Volunteering) %>%
+  pivot_longer(cols = Sports:Volunteering, names_to = "Activity", values_to = "Participation")
+
+ggplot(data_long, aes(x = GPA, fill = as.factor(Participation))) + 
+  geom_density(alpha = 0.5) +
+  labs(title = "Extracurricular Activities and GPA", x = "GPA", y = "Density") +
+  facet_wrap(~Activity, scales = "free") +
+  scale_fill_discrete(name = "Participation", labels = c("No", "Yes"))
+```
+

@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: 0f028eff-38cd-4045-81f4-a9923c2fd1df
+      url: 'https://shyamali.quarto.pub/student-gpa'
