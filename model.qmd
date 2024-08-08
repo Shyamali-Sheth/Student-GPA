@@ -6,6 +6,8 @@ execute:
   echo: false
 ---
 
+The model used is a gaussian model to determine the impact of all the covariates on the student GPA.
+
 $$GPA = \beta{0} + \beta{1} Age + \beta{2}StudyTimeWeekly + \beta{3}Absences + \beta{4}ParentalSupport + \beta{5}Tutoring + \epsilon{i}$$
 ```{r}
 #| label: setup
@@ -16,6 +18,7 @@ library(png)
 library(grid)
 ```
 
+Overall, the results underscore the importance of tutoring, parental support, and consistent study habits in positively influencing student GPA, while absences have a clearly detrimental effect.
 
 ```{r}
 #| label: renderRegTable
@@ -24,4 +27,12 @@ reg_table <- png::readPNG("table.png")
 grid::grid.raster(reg_table)
 ```
 
+
+*   The intercept represents the baseline predicted GPA when all predictors are at their reference levels (e.g., Age = 0, Study Time Weekly = 0, Absences = 0, Parental Support = 0, Tutoring = 0).
+The estimated baseline GPA is 2.9, with a credible interval of [2.7, 3.0], indicating high certainty around this estimate.
+
+*   The coefficient for Parental Support is 0.15, indicating that each unit increase in the level of parental support is associated with an increase in GPA by 0.15 points. The credible interval [0.14, 0.16] shows that this effect is quite robust and significant.
+Tutoring (0.25 [0.23, 0.27]):
+
+*   The coefficient for Tutoring is 0.25, suggesting that students who receive tutoring have, on average, a GPA that is 0.25 points higher than those who do not. The credible interval [0.23, 0.27] indicates that this effect is strong and reliably estimated.
 

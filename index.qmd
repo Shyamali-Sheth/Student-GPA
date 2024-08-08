@@ -4,16 +4,17 @@ execute:
   echo: false
 ---
 
-The many studying factors affect how well of a GPA a student will get. I got this data from Anna Balatska who did a python project on this dataset. The model i used for this project is the gaussien model which has the students GPA as its outcome and age, studytimeweekly, absences, parentalsupport, and tutoring as its covarients. If we dont change andy of the charateristics (age, studytimeweekly, absences, parentalsupport, and tutoring) it will just stay at 2.9. But if we change the characteristics the GPA will increase like if there is more parental support and more tutoring or it will decrease life it the absences increase and the studytime decreases.
+The many studying factors affect how well of a GPA a student will get. I got this data from Anna Balatska who did a python project on this dataset. The model i used for this project is the gaussien model which has the students GPA as its outcome as parentalsupport, and tutoring as its covarients. If parentalsupport and tutoring is absent the GPA will  stay at 2.9. However, the plot below shows that the GPA value can get a boost of upto 1.1 points if parental support and tutoring is provided.
 
 ```{r}
 # Load necessary libraries
-library(ggplot2)
-library(dplyr)
-library(tidyr)
 #| error: false
 #| warning: false
 #| message: false
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 ```
 
 ```{r}
@@ -23,4 +24,9 @@ library(tidyr)
 plot_image <- png::readPNG("plot.png")
 grid::grid.raster(plot_image)
 ```
+
+*   The improvement in GPA due to tutoring is most significant for students with Very High parental support, with an increase of approximately 1.1 GPA points.
+*   The improvement is smallest, but still substantial, for students with No parental support, with an increase of approximately 0.7 GPA points.
+*   On average, tutoring seems to improve GPA by 0.7 to 1.1 points depending on the level of parental support, with the impact of tutoring generally increasing as parental support increases.
+
 
