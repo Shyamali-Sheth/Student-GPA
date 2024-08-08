@@ -1,5 +1,26 @@
 ---
 title: "Student-GPA"
+execute: 
+  echo: false
 ---
 
 The many studying factors affect how well of a GPA a student will get. I got this data from Anna Balatska who did a python project on this dataset. The model i used for this project is the gaussien model which has the students GPA as its outcome and age, studytimeweekly, absences, parentalsupport, and tutoring as its covarients. If we dont change andy of the charateristics (age, studytimeweekly, absences, parentalsupport, and tutoring) it will just stay at 2.9. But if we change the characteristics the GPA will increase like if there is more parental support and more tutoring or it will decrease life it the absences increase and the studytime decreases.
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+#| error: false
+#| warning: false
+#| message: false
+```
+
+```{r}
+#| error: false
+#| warning: false
+#| message: false
+plot_image <- png::readPNG("plot.png")
+grid::grid.raster(plot_image)
+```
+

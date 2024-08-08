@@ -1,0 +1,93 @@
+---
+title: "GPAanalysis"
+author: "Shyamali Sheth"
+execute: 
+  echo: false
+---
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+
+library(tidyverse)
+library(brms)
+library(gtsummary)
+library(ggplot2)
+library(tidybayes)
+library(posterior)
+library(dplyr)
+library(modelr)
+library(gridExtra)
+library(webshot2)
+```
+
+```{r}
+#| label: loaddata
+#| warning: false
+#| message: false
+
+data <- read_csv("data/GPA_Data.csv")
+```
+
+
+```{r}
+#| label: models
+#| warning: false
+#| cache: true
+
+# Define the formula for the model
+formula <- bf(GPA ~ Age + StudyTimeWeekly + Absences + ParentalSupport + Tutoring)
+
+# Fit the model using brms
+model <- brm(
+  formula = formula,
+  data = data,
+  family = gaussian(),
+  silent = 2,
+  refresh = 0,
+  seed = 76)
+  
+fixef(model)
+pp_check(model)
+
+# Generate the regression table
+tbl_regression(model, intercept = TRUE) |> 
+  as_gt() |>  # convert to gt table
+  gt::gtsave( # save table as image
+    filename = "table.png"
+  )
+```
+
+```{r}
+# Add predicted draws
+data_with_predictions <- add_epred_draws(data, model)
+
+# Convert ParentalSupport and Tutoring to factors with descriptive labels
+data_with_predictions <- data_with_predictions %>%
+  mutate(ParentalSupport = factor(ParentalSupport, 
+                                  levels = c(0, 1, 2, 3, 4), 
+                                  labels = c("None", "Low", "Moderate", "High", "Very High")),
+         Tutoring = factor(Tutoring, 
+                           levels = c(0, 1), 
+                           labels = c("No Tutoring", "Yes Tutoring")))
+
+# Check the structure of the data
+str(data_with_predictions)
+
+# Create a faceted plot using geom_boxplot
+p <- ggplot(data_with_predictions, aes(x = ParentalSupport, y = .epred, fill = Tutoring)) +
+  geom_boxplot() +  # Boxplot for predictions
+  labs(
+    title = "Predicted GPA vs Parental Support and Tutoring",
+    x = "Parental Support",
+    y = "Predicted GPA"
+  ) +
+  theme_minimal() +
+  facet_wrap(~ Tutoring) +
+  scale_x_discrete(drop = FALSE)
+
+print(p)
+ggsave("plot.png", plot = p, width = 6, height = 4)
+```
+

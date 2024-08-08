@@ -1,5 +1,5 @@
 ---
-title: "GPA Analysis"
+title: "Model"
 author: "Shyamali Sheth"
 format: html
 execute: 
@@ -7,47 +7,21 @@ execute:
 ---
 
 $$GPA = \beta{0} + \beta{1} Age + \beta{2}StudyTimeWeekly + \beta{3}Absences + \beta{4}ParentalSupport + \beta{5}Tutoring + \epsilon{i}$$
-
 ```{r}
 #| label: setup
 #| message: false
 #| warning: false
 
-
-library(tidyverse)
-library(brms)
-library(gtsummary)
+library(png)
+library(grid)
 ```
+
 
 ```{r}
-#| label: loaddata
-#| warning: false
-#| message: false
+#| label: renderRegTable
 
-data <- read_csv("data/studentdata.csv")
+reg_table <- png::readPNG("table.png")
+grid::grid.raster(reg_table)
 ```
 
-```{r}
-#| label: models
-#| warning: false
-#| cache: true
-
-# Define the formula for the model
-formula <- bf(GPA ~ Age + StudyTimeWeekly + Absences + ParentalSupport + Tutoring)
-
-# Fit the model using brms
-model <- brm(
-  formula = formula,
-  data = data,
-  family = gaussian(),
-  silent = 2,
-  refresh = 0,
-  seed = 76)
-  
-fixef(model)
-tbl_regression(model, intercept = TRUE)
-pp_check(model)
-
-
-```
 
